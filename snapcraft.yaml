@@ -18,6 +18,7 @@ parts:
     source-branch: WX_3_0_BRANCH
     source-depth: 1
 
+    plugin: autotools
     build-packages:
     - gcc
     - g++
@@ -39,7 +40,6 @@ parts:
     - libxtst-dev
     - zlib1g-dev
 
-    plugin: autotools
     stage-packages:
     # For addr2line command
     - binutils
