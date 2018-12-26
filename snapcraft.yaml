@@ -19,6 +19,9 @@ parts:
     source-depth: 1
 
     plugin: autotools
+    configflags:
+    - --enable-printfposparam
+
     build-packages:
     - gcc
     - g++
