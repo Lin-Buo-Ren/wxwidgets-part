@@ -1,0 +1,175 @@
+name: wxwidgets
+version: current
+summary: A C++ library that lets developers create cross-platform applications
+description: |
+  wxWidgets is a C++ library that lets developers create applications for Windows, macOS, Linux and other platforms with a single code base. It has popular language bindings for Python, Perl, Ruby and many other languages, and unlike other cross-platform toolkits, wxWidgets gives applications a truly native look and feel because it uses the platform's native API rather than emulating the GUI. It's also extensive, free, open-source and mature.
+  
+  This remote part ships a recent wxWidgets release to your snap, refer the following snapcraft forum topic for more info:
+  
+      _forum_topic_title_
+      _forum_topic_url
+
+grade: stable
+confinement: strict
+
+parts:
+  wxwidgets-3-0:
+    after:
+      - ccache
+
+    source: https://github.com/wxWidgets/wxWidgets/releases/download/v3.0.4/wxWidgets-3.0.4.tar.bz2
+    #source: https://github.com/wxWidgets/wxWidgets.git
+    #source-tag: v3.0.4
+
+    build-packages:
+    - gcc
+    - g++
+
+    - gettext
+    - libcairo2-dev
+    - libexpat1-dev
+    - libgl1-mesa-dev
+    - libglu1-mesa-dev
+    - libgstreamer1.0-dev
+    - libgstreamer-plugins-base1.0-dev
+    - libgtk-3-dev
+    - libjpeg-dev
+    - libnotify-dev
+    - libpng-dev
+    - libsecret-1-dev
+    - libtiff5-dev
+    - libwebkit2gtk-4.0-dev
+    - libxtst-dev
+    - zlib1g-dev
+
+    plugin: autotools
+    stage-packages:
+    # For addr2line command
+    - binutils
+
+    # Library dependencies
+    - libatk-bridge2.0-0
+    - libatk1.0-0
+    - libatspi2.0-0
+    - libboost-filesystem1.58.0
+    - libboost-system1.58.0
+    - libcairo-gobject2
+    - libcairo2
+    - libcapnp-0.5.3
+    - libdatrie1
+    - libdrm2
+    - libegl1-mesa
+    - libenchant1c2a
+    - libepoxy0
+    - libfontconfig1
+    - libgbm1
+    - libgdk-pixbuf2.0-0
+    - libglapi-mesa
+    - libgraphite2-3
+    - libgstreamer-plugins-base1.0-0
+    - libgstreamer1.0-0
+    - libgtk-3-0
+    - libharfbuzz-icu0
+    - libharfbuzz0b
+    - libhyphen0
+    - libice6
+    - libicu55
+    - libjavascriptcoregtk-4.0-18
+    - libjbig0
+    - libjpeg-turbo8
+    - libmirclient9
+    - libmircommon7
+    - libmircore1
+    - libmirprotobuf3
+    - libnotify4
+    - liborc-0.4-0
+    - libpango-1.0-0
+    - libpangocairo-1.0-0
+    - libpangoft2-1.0-0
+    - libpixman-1-0
+    - libprotobuf-lite9v5
+    - libsecret-1-0
+    - libsm6
+    - libsoup2.4-1
+    - libthai0
+    - libtiff5
+    - libwayland-client0
+    - libwayland-cursor0
+    - libwayland-egl1-mesa
+    - libwayland-server0
+    - libwebkit2gtk-4.0-37
+    - libwebp5
+    - libwebpdemux1
+    - libx11-6
+    - libx11-xcb1
+    - libxau6
+    - libxcb-dri2-0
+    - libxcb-dri3-0
+    - libxcb-glx0
+    - libxcb-present0
+    - libxcb-render0
+    - libxcb-shm0
+    - libxcb-sync1
+    - libxcb-xfixes0
+    - libxcb1
+    - libxcomposite1
+    - libxcursor1
+    - libxdamage1
+    - libxdmcp6
+    - libxext6
+    - libxfixes3
+    - libxi6
+    - libxinerama1
+    - libxkbcommon0
+    - libxml2
+    - libxrandr2
+    - libxrender1
+    - libxshmfence1
+    - libxslt1.1
+    - libxxf86vm1
+
+    filesets:
+      autoconf-macros:
+      - share/aclocal/*
+      bakefiles:
+      - share/bakefile/*
+      files-from-stage-packages:
+      # Required by wxWidgets error dialog
+      - usr/bin/*addr2line
+      - usr/lib/**.so*
+      - usr/doc/*/copyright
+      executables:
+      - bin/*
+      library-headers:
+      - include
+      library-libtool:
+      - lib/*.la
+      library-pkgconfig:
+      - lib/pkgconfig
+      library-shared:
+      - lib/**.so*
+      library-static:
+      - lib/**.a
+      localizations:
+      - share/locale/*
+
+    override-stage: |
+      set \
+        -o errexit \
+        -o nounset
+
+      snapcraftctl stage
+
+      # Fixup wrong wx-config link
+      ln \
+        --force \
+        --relative \
+        --symbolic \
+        "${SNAPCRAFT_STAGE}"/lib/wx/config/gtk3-unicode-static-3.1 \
+        "${SNAPCRAFT_STAGE}"/bin/wx-config
+
+    prime: 
+    - $files-from-stage-packages
+    - $executables
+    - $library-shared
+    - $localizations
