@@ -14,12 +14,8 @@ confinement: strict
 
 parts:
   wxwidgets-3-0:
-    after:
-      - ccache
-
-    source: https://github.com/wxWidgets/wxWidgets/releases/download/v3.0.4/wxWidgets-3.0.4.tar.bz2
-    #source: https://github.com/wxWidgets/wxWidgets.git
-    #source-tag: v3.0.4
+    source: https://github.com/wxWidgets/wxWidgets.git
+    source-branch: WX_3_0_BRANCH
 
     build-packages:
     - gcc
