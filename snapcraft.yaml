@@ -16,6 +16,7 @@ parts:
   wxwidgets-3-0:
     source: https://github.com/wxWidgets/wxWidgets.git
     source-branch: WX_3_0_BRANCH
+    source-depth: 1
 
     build-packages:
     - gcc
