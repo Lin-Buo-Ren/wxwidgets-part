@@ -168,6 +168,13 @@ parts:
         "${SNAPCRAFT_STAGE}"/lib/wx/config/gtk3-unicode-3.0 \
         "${SNAPCRAFT_STAGE}"/bin/wx-config
 
+      # Fixup installation prefix
+      sed \
+        --follow-symlinks \
+        --in-place \
+        "s#^prefix=.*\$#prefix=\"${SNAPCRAFT_STAGE}\"#" \
+        "${SNAPCRAFT_STAGE}"/bin/wx-config
+
     prime: 
     - $files-from-stage-packages
     - $executables
