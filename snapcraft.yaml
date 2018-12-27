@@ -19,9 +19,6 @@ parts:
     source-depth: 1
 
     plugin: autotools
-    configflags:
-    - --enable-printfposparam
-
     build-packages:
     - gcc
     - g++
@@ -153,27 +150,29 @@ parts:
       localizations:
       - share/locale/*
 
-    override-stage: |
+    override-build: |
       set \
         -o errexit \
         -o nounset
 
-      snapcraftctl stage
+      snapcraftctl build
 
-      # Fixup wrong wx-config link
+      # Fix-up wx-config link
       ln \
         --force \
         --relative \
         --symbolic \
-        "${SNAPCRAFT_STAGE}"/lib/wx/config/* \
-        "${SNAPCRAFT_STAGE}"/bin/wx-config
+        "${SNAPCRAFT_PART_INSTALL}"/lib/wx/config/* \
+        "${SNAPCRAFT_PART_INSTALL}"/bin/wx-config
 
-      # Fixup installation prefix
+      # Fix-up installation prefix
+      # command line - How to use sed to replace only the first occurrence in a file? - Stack Overflow
+      # https://stackoverflow.com/questions/148451/how-to-use-sed-to-replace-only-the-first-occurrence-in-a-file
       sed \
         --follow-symlinks \
         --in-place \
-        "s#^prefix=.*\$#prefix=\"${SNAPCRAFT_STAGE}\"#" \
-        "${SNAPCRAFT_STAGE}"/bin/wx-config
+        "0,/^prefix=.*\$/ s##prefix=\"${SNAPCRAFT_STAGE}\"#" \
+        "${SNAPCRAFT_PART_INSTALL}"/bin/wx-config
 
     prime: 
     - $files-from-stage-packages
