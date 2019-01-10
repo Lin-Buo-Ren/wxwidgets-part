@@ -19,6 +19,9 @@ parts:
     source-depth: 1
 
     plugin: autotools
+    configflags:
+    - --with-gtk=3
+
     build-packages:
     - gcc
     - g++
@@ -174,7 +177,165 @@ parts:
         "0,/^prefix=.*\$/ s##prefix=\"${SNAPCRAFT_STAGE}\"#" \
         "${SNAPCRAFT_PART_INSTALL}"/bin/wx-config
 
-    prime: 
+    prime:
+    - $files-from-stage-packages
+    - $executables
+    - $library-shared
+    - $localizations
+
+  wxwidgets-3-0-gtk2:
+    after:
+    - ccache
+
+    source: https://github.com/wxWidgets/wxWidgets.git
+    source-branch: WX_3_0_BRANCH
+    source-depth: 1
+
+    plugin: autotools
+    configflags:
+    - --with-gtk=2
+
+    build-packages:
+    - g++
+    - pkg-config
+    - libcppunit-dev
+    - libexpat1-dev
+    - libgtk2.0-dev
+    - libjbig-dev
+    - libjpeg-turbo8-dev
+    - liblzma-dev
+    - libnotify-dev
+    - libgl1-mesa-dev
+    - libglu1-mesa-dev
+    - libgstreamer-plugins-base1.0-dev
+    - libgstreamer1.0-dev
+    - libpng12-dev
+    - libwebkitgtk-dev
+    - libtiff5-dev
+    - libxxf86vm-dev
+
+    stage-packages:
+    - libatk1.0-0
+    - libboost-filesystem1.58.0
+    - libboost-system1.58.0
+    - libcairo2
+    - libcapnp-0.5.3
+    - libdatrie1
+    - libdbus-glib-1-2
+    - libdrm2
+    - libegl1-mesa
+    - libenchant1c2a
+    - libfontconfig1
+    - libgbm1
+    - libgdk-pixbuf2.0-0
+    - libgeoclue0
+    - libglapi-mesa
+    - libgraphite2-3
+    - libgstreamer-plugins-base1.0-0
+    - libgstreamer1.0-0
+    - libgtk2.0-0
+    - libharfbuzz-icu0
+    - libharfbuzz0b
+    - libice6
+    - libicu55
+    - libjavascriptcoregtk-1.0-0
+    - libjbig0
+    - libjpeg-turbo8
+    - libmirclient9
+    - libmircommon7
+    - libmircore1
+    - libmirprotobuf3
+    - libnotify4
+    - liborc-0.4-0
+    - libpango-1.0-0
+    - libpangocairo-1.0-0
+    - libpangoft2-1.0-0
+    - libpixman-1-0
+    - libprotobuf-lite9v5
+    - libsecret-1-0
+    - libsm6
+    - libsoup2.4-1
+    - libthai0
+    - libtiff5
+    - libwayland-client0
+    - libwayland-server0
+    - libwebkitgtk-1.0-0
+    - libwebp5
+    - libx11-6
+    - libx11-xcb1
+    - libxau6
+    - libxcb-dri2-0
+    - libxcb-dri3-0
+    - libxcb-glx0
+    - libxcb-present0
+    - libxcb-render0
+    - libxcb-shm0
+    - libxcb-sync1
+    - libxcb-xfixes0
+    - libxcb1
+    - libxcomposite1
+    - libxcursor1
+    - libxdamage1
+    - libxdmcp6
+    - libxext6
+    - libxfixes3
+    - libxi6
+    - libxinerama1
+    - libxkbcommon0
+    - libxml2
+    - libxrandr2
+    - libxrender1
+    - libxshmfence1
+    - libxslt1.1
+    - libxt6
+    - libxxf86vm1
+
+    filesets:
+      autoconf-macros:
+      - share/aclocal
+      bakefiles:
+      - share/bakefile
+      files-from-stage-packages:
+      # Required by wxWidgets error dialog
+      - usr/bin/*addr2line
+      - usr/lib/**.so*
+      - usr/doc/*/copyright
+      executables:
+      - bin
+      library-headers:
+      - include
+      library-shared:
+      - lib/**.so*
+      library-static:
+      - lib/**.a
+      localizations:
+      - share/locale
+
+    override-build: |
+      set \
+        -o errexit \
+        -o nounset
+
+      snapcraftctl build
+
+      # Fix-up wx-config link
+      ln \
+        --force \
+        --relative \
+        --symbolic \
+        "${SNAPCRAFT_PART_INSTALL}"/lib/wx/config/* \
+        "${SNAPCRAFT_PART_INSTALL}"/bin/wx-config
+
+      # Fix-up installation prefix
+      # command line - How to use sed to replace only the first occurrence in a file? - Stack Overflow
+      # https://stackoverflow.com/questions/148451/how-to-use-sed-to-replace-only-the-first-occurrence-in-a-file
+      sed \
+        --follow-symlinks \
+        --in-place \
+        "0,/^prefix=.*\$/ s##prefix=\"${SNAPCRAFT_STAGE}\"#" \
+        "${SNAPCRAFT_PART_INSTALL}"/bin/wx-config
+
+    prime:
     - $files-from-stage-packages
     - $executables
     - $library-shared
