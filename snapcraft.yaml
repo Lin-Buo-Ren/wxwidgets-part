@@ -140,6 +140,7 @@ parts:
       - usr/doc/*/copyright
       executables:
       - bin/*
+      - lib/wx/config
       library-headers:
       - include
       library-libtool:
@@ -302,6 +303,7 @@ parts:
       - usr/doc/*/copyright
       executables:
       - bin
+      - lib/wx/config
       library-headers:
       - include
       library-shared:
