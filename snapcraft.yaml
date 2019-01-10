@@ -185,9 +185,6 @@ parts:
     - $misc
 
   wxwidgets-3-0-gtk2:
-    after:
-    - ccache
-
     source: https://github.com/wxWidgets/wxWidgets.git
     source-branch: WX_3_0_BRANCH
     source-depth: 1
