@@ -13,7 +13,7 @@ grade: stable
 confinement: strict
 
 parts:
-  wxwidgets-3-0:
+  wxwidgets-3-0-gtk3:
     source: https://github.com/wxWidgets/wxWidgets.git
     source-branch: WX_3_0_BRANCH
     source-depth: 1
