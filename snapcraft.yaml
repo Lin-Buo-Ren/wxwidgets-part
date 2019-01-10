@@ -180,7 +180,6 @@ parts:
 
     prime:
     - $files-from-stage-packages
-    - $executables
     - $library-shared
     - $localizations
 
@@ -339,6 +338,5 @@ parts:
 
     prime:
     - $files-from-stage-packages
-    - $executables
     - $library-shared
     - $localizations
