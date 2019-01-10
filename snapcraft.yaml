@@ -130,29 +130,29 @@ parts:
 
     filesets:
       autoconf-macros:
-      - share/aclocal/*
+      - share/aclocal
       bakefiles:
-      - share/bakefile/*
-      files-from-stage-packages:
-      # Required by wxWidgets error dialog
-      - usr/bin/*addr2line
-      - usr/lib/**.so*
-      - usr/doc/*/copyright
+      - share/bakefile
+      copyright:
+      - usr/share/doc/*/copyright
       executables:
-      - bin/*
+      - bin
       - lib/wx/config
       library-headers:
       - include
-      library-libtool:
-      - lib/*.la
-      library-pkgconfig:
-      - lib/pkgconfig
       library-shared:
-      - lib/**.so*
+      # FIXME: globstar syntax doesn't work for some reason
+      - lib/*.so*
+      - lib/*/*.so*
+      - usr/lib/*.so*
+      - usr/lib/*/*.so*
       library-static:
       - lib/**.a
       localizations:
-      - share/locale/*
+      - share/locale
+      misc:
+      # Required by wxWidgets error dialog
+      - usr/bin/*addr2line
 
     override-build: |
       set \
@@ -179,9 +179,10 @@ parts:
         "${SNAPCRAFT_PART_INSTALL}"/bin/wx-config
 
     prime:
-    - $files-from-stage-packages
+    - $copyright
     - $library-shared
     - $localizations
+    - $misc
 
   wxwidgets-3-0-gtk2:
     after:
@@ -295,22 +296,26 @@ parts:
       - share/aclocal
       bakefiles:
       - share/bakefile
-      files-from-stage-packages:
-      # Required by wxWidgets error dialog
-      - usr/bin/*addr2line
-      - usr/lib/**.so*
-      - usr/doc/*/copyright
+      copyright:
+      - usr/share/doc/*/copyright
       executables:
       - bin
       - lib/wx/config
       library-headers:
       - include
       library-shared:
-      - lib/**.so*
+      # FIXME: globstar syntax doesn't work for some reason
+      - lib/*.so*
+      - lib/*/*.so*
+      - usr/lib/*.so*
+      - usr/lib/*/*.so*
       library-static:
       - lib/**.a
       localizations:
       - share/locale
+      misc:
+      # Required by wxWidgets error dialog
+      - usr/bin/*addr2line
 
     override-build: |
       set \
@@ -337,6 +342,7 @@ parts:
         "${SNAPCRAFT_PART_INSTALL}"/bin/wx-config
 
     prime:
-    - $files-from-stage-packages
+    - $copyright
     - $library-shared
     - $localizations
+    - $misc
