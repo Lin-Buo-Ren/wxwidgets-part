@@ -5,9 +5,9 @@ description: |
   wxWidgets is a C++ library that lets developers create applications for Windows, macOS, Linux and other platforms with a single code base. It has popular language bindings for Python, Perl, Ruby and many other languages, and unlike other cross-platform toolkits, wxWidgets gives applications a truly native look and feel because it uses the platform's native API rather than emulating the GUI. It's also extensive, free, open-source and mature.
   
   This remote part ships a recent wxWidgets release to your snap, refer the following snapcraft forum topic for more info:
-  
-      _forum_topic_title_
-      _forum_topic_url
+
+      The wxWidgets remote part - doc - snapcraft.io
+      https://forum.snapcraft.io/t/the-wxwidgets-remote-part/9398
 
 grade: stable
 confinement: strict
